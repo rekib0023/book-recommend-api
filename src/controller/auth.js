@@ -14,22 +14,22 @@ exports.signin = (req, res) => {
 
 exports.signup = (req, res) => {
   const { email, password, username } = req.body.user;
-  User.findOne({ email: email }).then((user) => {
+  User.findOne({ username: username }).then((user) => {
     if (user) {
       return res
         .status(400)
-        .json({ errors: { global: "User already exists" } });
+        .json({ errors: { global: "Username already taken" } });
     }
-    // User.findOne({ username: username }).then((user) => {
-    //   if (user) {
-    //     return res
-    //       .status(400)
-    //       .json({ errors: { global: "Username already taken" } });
-    //   }
-    // });
-    const _user = new User({ username, email, password });
-    _user.save().then((userRecord) => {
-      res.json({ user: userRecord.toAuthJSON() });
+    User.findOne({ email: email }).then((user) => {
+      if (user) {
+        return res
+          .status(400)
+          .json({ errors: { global: "User already exists" } });
+      }
+      const _user = new User({ username, email, password });
+      _user.save().then((userRecord) => {
+        res.json({ user: userRecord.toAuthJSON() });
+      });
     });
   });
   // .catch((err) => res.status(400).json({ errors: parseErrors(err.errors) }));
