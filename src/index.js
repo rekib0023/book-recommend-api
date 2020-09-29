@@ -1,15 +1,17 @@
-import express from "express";
-import path from "path";
-import mongoose from "mongoose";
-import bodyParser from "body-parser";
-import dotenv from "dotenv"
-
-import auth from "./routes/auth";
-
-dotenv.config()
+const express = require("express");
+const env = require("dotenv");
+const path = require("path");
 const app = express();
-app.use(bodyParser.json());
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
+// routes
+const authRoutes = require("./routes/auth");
+
+env.config();
+const port = process.env.PORT;
+
+// mongodb connection
 mongoose
   .connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
@@ -20,10 +22,11 @@ mongoose
     console.log("Database connected");
   });
 
-app.use("/api/auth", auth);
+app.use(bodyParser.json());
+app.use("/api", authRoutes);
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.listen(8080, () => console.log("Running on localhost:8080"));
+app.listen(port, () => console.log(`Running on localhost:${port}`));

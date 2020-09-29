@@ -1,17 +1,8 @@
-import express from "express";
-import User from "../models/User";
-
+const express = require("express");
+const { signup, signin } = require("../controller/auth");
 const router = express.Router();
 
-router.post("/", (req, res) => {
-  const { credentials } = req.body;
-  User.findOne({ email: credentials.email }).then((user) => {
-    if (user && user.isValidPassword(credentials.password)) {
-      res.json({ user: user.toAuthJSON() });
-    } else {
-      res.status(400).json({ errors: { global: "Invalid credentials" } });
-    }
-  });
-});
+router.post("/signin", signin);
+router.post("/signup", signup);
 
-export default router;
+module.exports = router;
