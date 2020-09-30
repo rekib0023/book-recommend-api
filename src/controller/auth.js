@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models/User")
 
 exports.signin = (req, res) => {
   const { credentials } = req.body;
