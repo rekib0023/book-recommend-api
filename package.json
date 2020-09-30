@@ -6,7 +6,7 @@
   "author": "Rekib Ahmed",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "node src/index.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
